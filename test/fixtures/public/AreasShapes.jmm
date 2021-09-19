@@ -1,0 +1,44 @@
+import ioPlus;
+
+class AreaShapes{
+
+
+    public int getAreaOfSquare(int side){
+        int area;
+        area = side * side;
+        return area;
+    }
+
+    public int getAreaOfRectangle(int height, int width){
+       int area;
+       area = height * width;
+       return area;
+    }
+
+    public int getAreaOfTrapezoid(int base1, int base2, int height){
+       int area;
+       area = ((base1 + base2)/2)*height;
+       return area;
+    }
+
+    public int getAreaOfTriangle(int base, int height){
+        int area;
+        area = (base*height)/2;
+        return area;
+    }
+
+
+    public static void main(String[] args){
+        int res;
+
+        res = this.getAreaOfSquare(10);
+        ioPlus.print(res);
+         res = this.getAreaOfRectangle(10,3);
+         ioPlus.print(res);
+         res = this.getAreaOfTrapezoid(10,4,12);
+         ioPlus.print(res);
+         res = this.getAreaOfTriangle(10,5);
+         ioPlus.print(res);
+    }
+
+}

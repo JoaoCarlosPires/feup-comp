@@ -1,0 +1,106 @@
+import io;
+
+class WaterJug{
+
+    int maxCapacity;
+    int currentCapacity;
+
+    public boolean setMaxCapacity(int cap){
+        maxCapacity = cap;
+        return true;
+    }
+
+    public boolean fillJug(){
+        currentCapacity = maxCapacity;
+        return true;
+    }
+
+    public int getOneCup(int cupSize){
+        int temp;
+        temp = currentCapacity - cupSize;
+
+        if(!(temp < 0)){
+           currentCapacity = currentCapacity - cupSize;
+        }else{
+        }
+
+        return currentCapacity;
+    }
+
+    public int sumArray(int size, int[] a){
+        int sum;
+        int i;
+
+        i = 0;
+        sum = 0;
+
+        while(i < size){
+           sum = sum + a[i];
+           i = i + 1;
+        }
+
+        return sum;
+    }
+
+    public int getMultipleCups(int[] cups, int num_cups){
+        int req;
+        int res;
+
+        req = this.sumArray(num_cups, cups);
+
+        res = this.getOneCup(req);
+
+        return res;
+    }
+
+    public boolean emptyJug(){
+        currentCapacity = 0;
+        return true;
+    }
+
+    public int getCurrentCapacity(){
+        return currentCapacity;
+    }
+
+    public int getMaxCapacity(){
+       return maxCapacity;
+    }
+
+     public static void main(String[] args) {
+        WaterJug jug;
+
+        boolean nvm;
+
+        int cur;
+
+        int cup;
+        int[] cups;
+
+        cup = 10;
+        cups = new int[4];
+
+        cups[0] = 20;
+        cups[1] = 20;
+        cups[2] = 20;
+        cups[3] = 20;
+
+
+        jug = new WaterJug();
+
+        nvm = jug.setMaxCapacity(100);
+
+        cur = jug.getOneCup(cup);
+        io.print(cur);
+        cur = jug.getMultipleCups(cups,cups.length);
+        io.print(cur);
+        cur = jug.getOneCup(cup);
+        io.print(cur);
+
+        io.print(jug.getCurrentCapacity());
+        io.print(jug.getMaxCapacity());
+
+        nvm = jug.emptyJug();
+        io.print(jug.getCurrentCapacity());
+
+     }
+}

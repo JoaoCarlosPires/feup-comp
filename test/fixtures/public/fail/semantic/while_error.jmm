@@ -1,0 +1,18 @@
+/*  REASON:
+    While condition different from boolean.
+*/
+
+class T {
+    public static void main(String[] a) {
+        int a;
+
+        // Valid in java
+        while (true && !false) {
+            a = 1;
+        }
+
+        while (1+2) {
+            a = 1;
+        }
+    }
+}

@@ -1,0 +1,108 @@
+import io;
+
+class MathUtils {
+
+    public int sum(int a, int b){
+        int c;
+        c = a + b;
+        return c;
+    }
+
+    public int sub(int a, int b){
+        int c;
+        c = a - b;
+        return c;
+    }
+
+    public int mult(int a, int b){
+       int c;
+       c = a * b;
+       return c;
+    }
+
+    public int div(int a, int b){
+       int c;
+       c = a / b;
+       return c;
+    }
+
+    public boolean isGreater(int a, int b){
+        boolean statement;
+        if(b < a){
+            statement = true;
+        } else {
+            statement = false;
+        }
+        return statement;
+    }
+
+    public int sumProduct(int[] a, int[] b){
+        int i;
+        int sum;
+        int[] product;
+
+        i = 0;
+        sum = 0;
+        product = new int[5];
+
+
+        while(i < 5){
+            product[i] = a[i] * b[i];
+            i = i + 1;
+        }
+
+        i = 0;
+        while(i < 5){
+            sum = sum + product[i];
+            i = i + 1;
+        }
+
+        return sum;
+    }
+
+    public int[] initArray(){
+        int[] a;
+        a = new int[5];
+
+        a[0] = 2;
+        a[1] = 4;
+        a[2] = 6;
+        a[3] = 7;
+        a[4] = 8;
+
+        return a;
+    }
+
+    public int complexExpression(int a, int b){
+        int c;
+        c = a * b - (a / (b + a * a));
+        return c;
+    }
+
+    public static void main(String[] args) {
+        int a;
+        int b;
+        int c;
+        boolean retValue;
+        MathUtils m;
+
+        m = new Math();
+        a = 20;
+        b = 10;
+
+        c = m.sum(a,b);
+        io.print(c);
+        c = m.sub(a,b);
+        io.print(c);
+        c = m.mult(a,b);
+        io.print(c);
+        c = m.div(a,b);
+        io.print(c);
+        retValue = m.isGreater(a,b);
+        io.print(retValue);
+        c = m.sumProduct(this.initArray(),this.initArray());
+        io.print(c);
+        io.print(m.complexExpression(15,20));
+    }
+
+}

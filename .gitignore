@@ -1,0 +1,14 @@
+/bin/
+.gradle/
+/build/
+/gradle/
+/generated/
+.gradle
+.project
+.idea
+.classpath
+*.dot
+gradlew
+gradlew.bat
+comp2021-*.jar
+output.json

@@ -1,0 +1,93 @@
+import io;
+
+class ArrayManipulator{
+
+    //Only works with arrays with positive numbers
+    public int getIndex(int index, int[] a){
+        int i;
+        int value;
+        int temp;
+
+        i = 0;
+        value = 0 - 1;
+
+        if(index < a.length){
+
+            while(i < a.length){
+                temp = index - i;
+
+                if( (temp < 1) && !(temp < (0-1)) ){
+                    value = a[i];
+                }
+                else{}
+                i = i + 1;
+
+            }
+        }
+        else {
+        }
+
+
+        return value;
+    }
+
+    public int[] cloneArray(int[] a){
+        int[] clonedArray;
+        int i;
+
+        i = 0;
+        clonedArray = new int[a.length];
+
+        while(i < a.length){
+           clonedArray[i] = a[i];
+           i = i + 1;
+        }
+
+        return clonedArray;
+    }
+
+    public int[] insertIntoArray(int value, int[] a){
+        int[] clonedArray;
+        int i;
+
+        i = 0;
+        clonedArray = new int[a.length + 1];
+
+        while(i < a.length){
+            clonedArray[i] = a[i];
+            i = i + 1;
+        }
+
+        clonedArray[a.length] = value;
+
+        return clonedArray;
+    }
+
+    public static void main(String[] args){
+        int[] test;
+        int[] test2;
+        int res;
+
+        res = 0;
+        test = new int[3];
+        test2 = new int[0];
+
+        test[0] = 1;
+        test[1] = 2;
+        test[2] = 3;
+
+        res = this.getIndex(1,test);
+        io.print(res);
+
+        res = this.getIndex(3,test);
+        io.print(res);
+
+        test2 = this.cloneArray(test);
+        io.print(test2.length);
+
+        test2 = this.insertIntoArray(3,test2);
+        io.print(test2.length);
+
+    }
+
+}

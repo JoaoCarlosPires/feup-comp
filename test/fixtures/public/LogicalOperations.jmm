@@ -1,0 +1,66 @@
+import io;
+
+class Logic{
+
+    public boolean singleLogicalOperation(int num){
+        boolean res;
+
+        if((num < 10) && !(num < 5)){
+            res = true;
+        }
+        else{
+            res = false;
+        }
+
+        return res;
+    }
+
+    public boolean complexLogicalOperation(int num){
+        boolean res;
+
+        if((!(num < 1) && (num < 5)) && (num < 3)){
+           res = true;
+        }
+        else{
+           res = false;
+        }
+
+        return res;
+    }
+
+    public static void main(String[] args) {
+       boolean a;
+
+       a = this.singleLogicalOperation(9);
+       if(a && true){
+          io.print(1);
+       } else {
+          io.print(0);
+       }
+
+       a = this.singleLogicalOperation(0);
+       if(a && true){
+          io.print(1);
+       } else {
+          io.print(0);
+       }
+
+       a = this.complexLogicalOperation(2);
+       if(a && true){
+          io.print(1);
+       } else {
+          io.print(0);
+       }
+
+       a = this.complexLogicalOperation(9);
+       if(a && true){
+          io.print(1);
+       } else {
+          io.print(0);
+       }
+
+
+    }
+
+
+}

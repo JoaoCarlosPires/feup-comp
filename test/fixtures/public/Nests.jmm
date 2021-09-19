@@ -1,0 +1,114 @@
+import io;
+
+class NestedWhile{
+
+
+    public int nestedWhiles(){
+        int i1;
+        int i2;
+        int i3;
+        int sum;
+
+        sum = 0;
+        i1 = 0;
+        while(i1 < 10){
+           i2 = 0;
+           while(i2 < 10){
+              i3 = 0;
+              while(i3 < 10){
+                  i3 = i3 + 1;
+                  sum = sum + 1;
+               }
+
+              i2 = i2 + 1;
+              sum = sum + 1;
+           }
+
+           i1 = i1 + 1;
+           sum = sum + 1;
+        }
+
+        return sum;
+    }
+
+    public int nestedIf(int num){
+        int res;
+        res = 0;
+
+        if(num < 100){
+           if(num < 50){
+               if(num < 25){
+                  res = 10;
+               }
+               else{
+                  res = 30;
+               }
+           }
+           else{
+           }
+        }else{
+           res = 3;
+        }
+
+        return num;
+    }
+
+    public int mixed(int num){
+        int sum;
+        int i1;
+        int i2;
+        sum = 0;
+
+        if(num < 100){
+            if(num < 50){
+                i1 = 0;
+                while(i1 < 100){
+                    sum = sum + 4;
+                    i1 = i1 + 5;
+                }
+            }
+            else{
+                sum = 10;
+            }
+        }else{
+            i2 = 0;
+            while(i2 < 100){
+                sum = sum + 1;
+                i2 = i2 + 1;
+            }
+        }
+
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        int i;
+        i = 0;
+
+        i = this.nestedWhiles();
+        io.print(i);
+
+        i = this.nestedIf(102);
+        io.print(i);
+
+        i = this.nestedIf(90);
+        io.print(i);
+
+        i = this.nestedIf(12);
+        io.print(i);
+
+        i = this.nestedIf(30);
+        io.print(i);
+
+        i = this.mixed(102);
+        io.print(i);
+
+        i = this.mixed(90);
+        io.print(i);
+
+        i = this.mixed(12);
+        io.print(i);
+
+
+    }
+}

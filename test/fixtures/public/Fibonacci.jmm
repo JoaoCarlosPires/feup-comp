@@ -1,0 +1,26 @@
+import io;
+
+class Fibonacci{
+
+    public int getFibonacci(int N){
+        int res;
+
+        if(N < 2){
+            res = N;
+        }
+        else{
+            res = this.getFibonacci(N - 1) + this.getFibonacci(N - 2);
+        }
+
+        return res;
+    }
+
+    public static void main(String[] args){
+        int n;
+
+        n = this.getFibonacci(9);
+        io.print(n);
+    }
+
+
+}

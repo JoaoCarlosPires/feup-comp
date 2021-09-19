@@ -1,0 +1,292 @@
+options{
+    LOOKAHEAD=1;
+}
+
+PARSER_BEGIN(Parser)
+	import pt.up.fe.comp.jmm.report.Report;
+	import pt.up.fe.comp.jmm.report.ReportType;
+	import pt.up.fe.comp.jmm.report.Stage;
+
+    public class Parser{
+		public static int maxErrors = 10; // maximum number of errors before aborting execution
+		public static ReportType while_reporttype = ReportType.ERROR;
+		public static Stage while_stage = Stage.SYNTATIC;
+		public static Report while_report = new Report(while_reporttype, while_stage, 0, "WHILE ERROR TREATMENT: All tokens causing conflicts consumed");
+
+        public static void main(String args[]){
+            try{
+	            Parser parser = new Parser(System.in);
+	            SimpleNode root = parser.Program(); // returns reference to root node
+	            root.dump("");
+            } catch (ParseException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+	  
+
+    }
+PARSER_END(Parser)
+
+JAVACODE
+void while_error_treatment() {
+
+  	if (Parser.maxErrors == 0) {
+		System.out.println("Reached limit of 10 errors. Aborting execution...\n"); 
+		System.exit(0);
+  	}
+
+  	Parser.maxErrors--;
+  	System.out.println("Number of errors remaining: " + Parser.maxErrors + "\n"); 
+
+	ParseException e = generateParseException();
+	System.out.println(e.toString());
+	Token t;
+
+	do { // consume tokens while they're different from ')'
+    	t = getNextToken();
+  	} while (t.kind != RPARENC);
+
+  	while (getToken(1).kind == RPARENC) { // consume extra ')' tokens
+    	t = getNextToken();
+   	}
+
+	Parser.while_report = new Report(Parser.while_reporttype, Parser.while_stage, e.currentToken.beginLine, "WHILE ERROR TREATMENT: All tokens causing conflicts consumed");
+	System.out.println(Parser.while_report.toString() + "\n");
+	System.out.println("---" + "\n");    	
+}
+
+
+SKIP :
+{
+    " " | "\r" | "\t" | "\n"
+    |
+    < "//" (~["\r", "\n"])* >
+    |
+    < "/*" > : MULTILINE_COMMENT
+}
+
+<MULTILINE_COMMENT> SKIP :
+{
+      < "*/" > : DEFAULT
+    | < ~[] >
+}
+
+TOKEN:
+{
+    <INT : "int">
+   |<BOOLEAN: "boolean">
+   |<CLASS: "class">
+   |<IMPORT: "import">
+   |<EXTENDS: "extends">
+   |<PUBLIC: "public">
+   |<RETURN: "return">
+   |<STATIC: "static">
+   |<VOID: "void">
+   |<MAIN:"main">
+   |<STRING: "String">
+   |<IF: "if">
+   |<ELSE: "else">
+   |<WHILE: "while">
+   |<LENGTH: "length">
+   |<TRUE: "true">
+   |<FALSE: "false">
+   |<THIS: "this">
+   |<NEW: "new">
+   |<INTEGERLITERAL: (["0"-"9"])+ >
+   |< IDENTIFIER : ["A"-"Z","a"-"z","_","$"](["0"-"9","A"-"Z","a"-"z","_","$"])* >
+   |<IGUAL: "=">
+   |<PVIRG:";">
+   |<DOT: ".">
+   |<PEXCL: "!">
+   |<VIRG: ",">
+   |<MULT: "*">
+   |<AND: "&&">
+   |<LESS: "<">
+   |<PLUS: "+">
+   |<MINUS: "-">
+   |<DIV: "/">
+   |<LPARENC: "(">
+   |<RPARENC: ")">
+   |<LPARENR: "[">
+   |<RPARENR: "]">
+   |<LBRACE: "{">
+   |<RBRACE: "}">
+}
+
+SimpleNode Program():{}
+{
+    ImportDeclaration()
+    ClassDeclaration()
+    <EOF>
+    { return jjtThis ; }
+}
+
+void ImportDeclaration() #Import :{}
+{
+    ( mainPackage()  <PVIRG> )*
+}
+
+void mainPackage() #MainPackage:{Token t1;}
+{
+    <IMPORT> t1 = <IDENTIFIER> {jjtThis.put("main_package",t1.image);} ( secondaryPackage())*
+}
+
+void secondaryPackage() #SecondaryPackage:{Token t2;}
+{
+    <DOT> t2 = <IDENTIFIER> {jjtThis.put("secondary_import",t2.image);}
+}
+
+void ClassDeclaration() #Class :{Token t1, t2;}
+{
+    <CLASS> t1 = <IDENTIFIER> {jjtThis.put("class_name",t1.image);}  ( <EXTENDS> t2 = <IDENTIFIER> {jjtThis.put("extension_name",t2.image);})? <LBRACE> (Var_Declaration())* (MethodDeclaration())* <RBRACE>
+}
+
+void MethodDeclaration() #Method :{Token t1, t2, t3;}
+{
+    <PUBLIC>(
+        (Type() t1 = <IDENTIFIER> {jjtThis.put("function_name",t1.image);} <LPARENC> parameters() <RPARENC>
+        <LBRACE>  ( LOOKAHEAD(2) Var_Declaration())* (Statement())* <RETURN> Expression() #Return <PVIRG> <RBRACE>)
+        |
+        (<STATIC> <VOID> t2 = <MAIN> {jjtThis.put("function_name",t2.image);} <LPARENC> <STRING> <LPARENR> <RPARENR> t3 = <IDENTIFIER> {jjtThis.put("argument_name",t3.image);} <RPARENC>
+        <LBRACE> ( LOOKAHEAD(2) Var_Declaration())* (Statement())*  <RBRACE>)
+    )
+}
+
+void parameters() #Function_parameters: {Token t2;}
+{
+    (Type() t2 = <IDENTIFIER> {jjtThis.put("parameter_name",t2.image);} ( <VIRG> multipleParDec())*)?
+}
+
+void multipleParDec() #MultiParDec :{Token t1;}
+{
+     Type()  t1 = <IDENTIFIER> {jjtThis.put("var_name",t1.image);}
+}
+
+void Var_Declaration() #VarDeclaration :{Token t1;}
+{
+    Type() t1 = <IDENTIFIER> {jjtThis.put("var_name",t1.image);} <PVIRG>
+}
+
+void Type() :{Token t1, t2, t3;}
+{
+    (t1 = <INT> {jjtThis.put("type",t1.image);} (t2 = <LPARENR> t3 = <RPARENR> {jjtThis.put("type",t2.image + t3.image);})?)
+    |
+    (t2 = <BOOLEAN> {jjtThis.put("type",t2.image);})
+    |
+    (t3 = <IDENTIFIER> {jjtThis.put("type",t3.image);})
+}
+
+void Statement() #Statement :{}
+{
+  	IfStatement()
+    |
+    WhileStatement()
+    |
+    Expression() (Assignment() #Assign(2))? <PVIRG>
+}
+
+void IfStatement() #void:{}
+{
+     <IF> <LPARENC> Expression() <RPARENC> Content() <ELSE> Content() #IfElse(3)
+}
+
+void WhileStatement() #void :{}
+{
+  	<WHILE> <LPARENC>
+
+	try {
+	    (Expression() <RPARENC>)
+	} catch (ParseException e) {
+		while_error_treatment();
+	}
+
+	Content() #While(2)
+}
+
+void Content() #Content :{}
+{
+    (<LBRACE> (Statement())* <RBRACE>) | Statement()
+}
+
+
+void Assignment() #Assignment :{Token t;}
+{
+     <IGUAL> #Igual Expression()
+}
+
+void Expression() :{}
+{
+   LogicalAndExpression()
+}
+/*
+Java Operator Precedence Table
+-> Larger number means higher precedence.
+4 - && (Logical AND)
+9 - < (Relational less than)
+11 - + | - (Addition and Subtraction)
+12 - * | / (Multiplication and Division)
+13 - ! (Unary logical negation)
+15 - () | [] | . (Parentheses, Array subscript and Member selection)
+ */
+
+void LogicalAndExpression() #void :{}
+{
+    RelationalLessThanExpression() (<AND> RelationalLessThanExpression() #And(2))*
+}
+
+void RelationalLessThanExpression() #void :{}
+{
+    AddORSubExpression() (<LESS> AddORSubExpression() #Less(2))*
+}
+
+void AddORSubExpression() #void :{}
+{
+    MultORDivExpression() ( (<PLUS> MultORDivExpression() #Plus(2)) | (<MINUS> MultORDivExpression() #Minus(2)) )*
+}
+void MultORDivExpression() #void :{}
+{
+    LogicalNegation() ( (<MULT> LogicalNegation() #Mult(2)) | (<DIV> LogicalNegation() #Div(2)) )*
+}
+
+void LogicalNegation() #void :{}
+{
+    (<PEXCL> LogicalNegation() #LogicalNegation ) | ParenthesesORArrayORDotExpression()
+}
+
+void ParenthesesORArrayORDotExpression() #void:{}
+{
+    TerminalExpression() (ArrayExpression() #Array(2) | DotExpression() #Dot(2))*
+}
+
+void ArrayExpression():{}
+{
+    <LPARENR> Expression() <RPARENR>
+}
+
+void DotExpression() #void :{Token t;}
+{
+    <DOT>( <LENGTH> #LEN | (t = <IDENTIFIER> {jjtThis.put("var_name",t.image);} <LPARENC> (Expression() (<VIRG> Expression())*)? <RPARENC>) #DotExpression )
+}
+
+void ParenthesesExpression() #void :{}
+{
+    <LPARENC>  Expression() <RPARENC>
+}
+
+void TerminalExpression(): {Token t;}
+{
+    NewExpression()
+    |ParenthesesExpression()
+    |t = <TRUE> {jjtThis.put("boolean_value",t.image);} #Bool
+    |t = <FALSE> {jjtThis.put("boolean_value",t.image);} #Bool
+    |<THIS> #This
+    |t = <INTEGERLITERAL> {jjtThis.put("integer_value",t.image);} #Integer
+    |t = <IDENTIFIER> {jjtThis.put("var_name",t.image);} #Variable
+
+}
+
+void NewExpression() #void :{Token t;}
+{
+    <NEW> ( (<INT> <LPARENR> Expression() <RPARENR>) #NewArray | ( t = <IDENTIFIER> {jjtThis.put("method_name",t.image);} <LPARENC> <RPARENC>) #NewMethod )
+}

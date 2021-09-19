@@ -1,0 +1,17 @@
+import io;
+class Simple {
+    public static void main(String[] args){
+        int[] b;
+        int[] a;
+        a = new int[3];
+        b = new int[2];
+        b[0] = 10;
+        a = this.func();
+    }
+
+    public int[] func() {
+        int[] c;
+        c = new int[3];
+        return c;
+    }
+}

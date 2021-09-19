@@ -1,0 +1,22 @@
+/*  REASON:
+    If condition different from boolean.
+*/
+
+class T {
+    public static void main(String[] a) {
+        int a;
+
+        // Valid in java
+        if (true && !false) {
+            a = 1;
+        } else {
+            a = 2;
+        }
+
+        if (1+2) {
+            a = 1;
+        } else {
+            a = 2;
+        }
+    }
+}

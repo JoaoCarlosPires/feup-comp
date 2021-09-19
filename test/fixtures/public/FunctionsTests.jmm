@@ -1,0 +1,72 @@
+import io;
+
+class FunctionTests{
+
+    public int sum(int a, int b){
+        int c;
+        c = a + b;
+        return c;
+    }
+
+    public int megaSum(int a, int b, int c, int d, int e, int f, int g, int h, int i){
+        int z;
+        z = a + b + c + d + e + f + g + h + i;
+        return z;
+    }
+
+    public int[] isSmaller(int a, int[] b){
+        int[] c;
+        int i;
+        int j;
+        c = new int[5];
+        i = 0;
+        j = 0;
+
+        while(i < 10){
+            if(b[i] < a){
+                c[j] = b[i];
+                j = j + 1;
+            } else {
+            }
+            i = i + 1;
+        }
+
+        return c;
+    }
+
+    public int[] initArray(){
+       int[] a;
+       a = new int[10];
+
+       a[0] = 0;
+       a[1] = 1;
+       a[2] = 2;
+       a[3] = 3;
+       a[4] = 4;
+       a[5] = 5;
+       a[6] = 6;
+       a[7] = 7;
+       a[8] = 8;
+       a[9] = 9;
+
+       return a;
+    }
+
+    public static void main(String[] args) {
+        int a;
+        int[] b;
+
+        a = 0;
+        b = new int[5];
+
+        a = this.sum(b.length,this.sum(20,this.sum(10,3)));
+        io.print(a);
+
+        b = this.isSmaller(5, this.initArray());
+        io.print(b.length);
+
+        a = this.megaSum(1,2,3,4,5,6,7,8,b.length);
+        io.print(a);
+    }
+
+}
