@@ -1,6 +1,6 @@
 # feup-comp
  
-This project was created during the **2nd semester** of the **3rd year** of **Integrated Master in Informatics and Computing Engineering**, in **Compilers*** curricular unity (FEUP).
+This project was created during the **2nd semester** of the **3rd year** of **Integrated Master in Informatics and Computing Engineering**, in **Compilers** curricular unity (FEUP).
 
 [COMP FEUP-Sigarra](https://sigarra.up.pt/feup/en/UCURR_GERAL.FICHA_UC_VIEW?pv_ocorrencia_id=272729 "Curricular Unity Homepage")
 
